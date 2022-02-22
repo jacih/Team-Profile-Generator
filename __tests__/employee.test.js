@@ -2,27 +2,27 @@
 const Employee = require('../lib/employee');
 
 // test to confirm employee object is created;
-test('Intantiate employee object', () => {
+test('Instantiate employee object', () => {
   const e = new Employee();
   expect(typeof(e)).toBe('object');
 });
 
 // confirm name can be input as employee name;
-test('Can input name value to constructor', () => {
+test('Can input name value into constructor', () => {
   const testVal = 'name';
   const e = new Employee(testVal);
   expect(e.testVal).toBe(testVal);
 });
 
 // confirm id can be input as employee id;
-test('Can input id value to constructor', () => {
+test('Can input id value into constructor', () => {
   const testVal = INT;
   const e = new Employee('name', testVal);
   expect(e.testVal).toBe(testVal);
 });
   
 // confirm email can be input as employee email;
-test('Can input email value to constructor', () => {
+test('Can input email value into constructor', () => {
   const testVal = 'abc@abc.com';
   const e = new Employee('name', INT, testVal);
   expect(e.testVal).toBe(testVal);
