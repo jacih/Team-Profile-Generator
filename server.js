@@ -1,16 +1,18 @@
-// declare required libraries : inquirer, employee, manager, intern, engineer, fs
 const inquirer = require('inquirer');
+const path = require('path');
 const fs = require('fs');
+const emailValid = require('email-validator');
 
 const Manager = require('./lib/manager');
 const Engineer = require('./lib/engineer');
 const Intern = require('./lib/intern');
-const renderHTML = require('./dist/renderHTML');
+
+const generateHTML = require('./src/generateHTML');
 
 let employeeTeam = [];
 
-const addEmployee = () => {
-  return inquirer.prompt([
+function addEmployee() {
+  inquirer.prompt([
     {
       type: 'input',
       message: 'Please input your team member\'s name',
@@ -42,8 +44,7 @@ const addEmployee = () => {
       message: 'Please enter the team member\'s email address',
       name: 'email',
       validate: emailInput => {
-        valid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(emailInput);
-        if (valid) {
+        if (emailValid.validate(emailInput)) {
           return true;
         } else {
           console.log('Please enter an email address');
@@ -62,7 +63,7 @@ const addEmployee = () => {
         name: 'role',
       }
   ])
-  .then(function({ name, id, email, role }) {
+  .then(function({ role }) {
     let specInfo = '';
     if (role === 'Engineer') {
       specInfo = 'Github username';
@@ -76,19 +77,12 @@ const addEmployee = () => {
         type: 'input',
         message: `Please enter the team member\'s ${specInfo}`,
         name: 'specInfo',
-      },
-      {
-        type: 'list',
-        message: 'Would you like to add another team members?',
-        choices: [
-            'yes',
-            'no'
-        ],
-        name: 'addMember'
       }
-    ])
-    .then(function({ specInfo, addMember }) {
+    ]).then(employeeData => {
+
+      let { name, id, email, specInfo } = employeeData;
       let employee;
+
       if (role === 'Engineer') {
         employee = new Engineer(name, id, email, specInfo);
       } else if (role === 'Intern') {
@@ -97,13 +91,41 @@ const addEmployee = () => {
         employee = new Manager(name, id, email, specInfo);
       }
       employeeTeam.push(employee);
-      renderHTML(employeeTeam)
-      .then(function() {
-        if (addMember === 'yes') {
-          addEmployee();
-        }
-      })
-    })
-  })
-};
+      generateTeam();
+    });
+  });
+}
 
+function generateTeam() {
+  inquirer.prompt([
+    {
+      type:'confirm',
+      message:'Would you like to add a team member?',
+      default:'Yes',
+      name: 'addMember',
+    }
+  ]).then((confirm) => {
+    if (confirm.addMember) {
+      addEmployee();
+    } else if (!confirm.addMember) {
+      if (employeeTeam.length < 3) {
+        console.log('You must have at least 3 members on your team!')
+        addEmployee();
+      } else {
+        let createHTML = generateHTML(employeeTeam);
+        renderHTML('./dist/team.html', createHTML);   
+      }
+    }
+  });
+}
+
+function renderHTML(fileName, data) {
+  fs.writeFile(fileName, data, (err) => {
+    if (err) {
+      console.log(err);
+    } 
+    console.log('Your team profile html has been successfully created!');
+  });
+}
+
+generateTeam();
