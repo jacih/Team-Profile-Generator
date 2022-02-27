@@ -1,74 +1,95 @@
-const manager = require('../lib/manager');
-const engineer = require('../lib/engineer');
-const intern = require('../lib/intern');
+const Manager = require('../lib/manager');
+const Engineer = require('../lib/engineer');
+const Intern = require('../lib/intern');
 
-function generateHTML(employeeTeam) {
+let manCard = `
+  <div class="col-4 mt-4">
+    <div class="card h-100">
+      <div class="card-header">
+        <h3 class="emp-name">${manager.getName()}</h3>
+        <h4 class="emp-role">${manager.getRole()}
+          <i class="fa fa-briefcase" aria-hidden="true"></i>
+        </h4>
+      </div>
+      <div class="card-body">
+        <p class="id">ID: ${manager.getId()}</p>
+        <p class="email">Email: 
+          <a href="mailto:${manager.getEmail()}">${manager.getEmail()}</a>
+        </p>
+        <p class="specInfo">Office Number: ${manager.getofficeN()}</p>
+      </div>
+    </div>
+  </div>
+  `;
+
+let engCard = `
+  <div class="col-4 mt-4">
+    <div class="card h-100">
+      <div class="card-header">
+        <h3 class="emp-name">${engineer.getName()}</h3>
+        <h4 class="emp-role">${engineer.getRole()}
+          <i class="fa fa-laptop" aria-hidden="true"></i>
+        </h4>
+      </div>
+      <div class="card-body">
+        <p class="id">ID: ${engineer.getId()}</p>
+        <p class="email">Email: 
+          <a href="mailto:${engineer.getEmail()}">${engineer.getEmail()}</a>
+        </p>
+        <p class="specInfo">Github: 
+          <a href="https://github.com/${engineer.getGithub()}">${engineer.getGithub()}</a>
+        </p>
+      </div>
+    </div>
+  </div>
+  `;
+
+let intCard = `
+  <div class="col-4 mt-4">
+    <div class="card h-100">
+      <div class="card-header">
+        <h3 class="emp-name">${intern.getName()}</h3>
+        <h4 class="emp-role">${intern.getID()}
+        <i class="fa fa-graduation-cap" aria-hidden="true"></i>
+        </h4>
+      </div>
+      <div class="card-body">
+        <p class="id">ID: ${intern.id}</p>
+          <p class="email">Email: 
+            <a href="mailto:${intern.getEmail()}">${intern.getEmail()}</a>
+          </p>
+          <p class="specInfo">School: ${intern.getSchool()}</p>
+      </div>
+    </div>
+  </div>
+  `;
+
+function generateCards(employeeTeam) {
 
   let cards = [];
-  
+
   for (let i = 0; i < employeeTeam.length; i++) {
     const employee = employeeTeam[i];
-    const role = employee.getRole();
-
-    if (role === 'Manager') {
-      let manCard = `
-      <div class="col-4 mt-4">
-        <div class="card h-100">
-          <div class="card-header">
-            <h3>${manager.name}</h3>
-            <h4>Manager</h4><i class="material-icons">content_paste</i>
-          </div>
-          <div class="card-body">
-            <p class="id">ID: ${manager.id}</p>
-            <p class="email">Email: <a href="mailto:${manager.email}">${manager.email}</a></p>
-            <p class="office">Office Number: ${manager.officeN}</p>
-          </div>
-        </div>
-      </div>
-      `;
-      cards.push(manCard);
-    } else if (role === 'Engineer') {
-      let engCard = `
-      <div class="col-4 mt-4">
-        <div class="card h-100">
-          <div class="card-header">
-            <h3>${engineer.name}</h3>
-            <h4>Engineer</h4><i class="material-icons">laptop_mac</i>
-          </div>
-          <div class="card-body">
-            <p class="id">ID: ${engineer.id}</p>
-            <p class="email">Email: <a href="mailto:${engineer.email}">${engineer.email}</a></p>
-            <p class="github">Github: <a href="https://github.com/${engineer.github}">${engineer.github}</a></p>
-          </div>
-        </div>
-      </div>
-      `;
-      cards.push(engCard);
-    } else if (role === 'Intern') {
-      let intCard = `
-      <div class="col-4 mt-4">
-        <div class="card h-100">
-          <div class="card-header">
-            <h3>${intern.name}</h3>
-            <h4>Intern</h4><i class="material-icons">assignment_ind</i>
-          </div>
-          <div class="card-body">
-            <p class="id">ID: ${intern.id}</p>
-              <p class="email">Email:<a href="mailto:${intern.email}">${intern.email}</a></p>
-              <p class="school">School: ${intern.school}</p>
-          </div>
-        </div>
-      </div>
-      `;
-      cards.push(intCard);
+    switch(employee.getRole()) {
+      case 'Manager':
+        const manager = new Manager(employee.id, employee.name, employee.email, employee.specInfo);
+        cards.push(manCard);
+        break;
+      case 'Engineer':
+        const engineer = new Engineer(employee.id, employee.name, employee.email, employee.specInfo);
+        cards.push(engCard);
+        break;
+      case 'Intern':
+        const intern = new Intern((employee.id, employee.name, employee.email, employee.specInfo);
+        cards.push(intCard);
+        break;
     }
   }
   let cardsHTML = cards.join(''); 
-  let htmlContent = renderBoilerplate(cardsHTML);
-  return htmlContent;
+  return cardsHTML;
 }
 
-function renderBoilerplate(cardsHTML) {
+function renderBoilerplate() {
   return `
     <!DOCTYPE html>
     <html lang="en">
@@ -96,7 +117,7 @@ function renderBoilerplate(cardsHTML) {
             <div class="header text-center bg-info" id="teamMemberContainer">
               <h2>Team Members:</h2>
                 <div class="row ms-1" id="card-container">
-                  ${cardsHTML}
+                  ${generateCards(employeeTeam)}
                 </div>
             </div>
           </section>
