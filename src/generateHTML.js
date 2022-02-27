@@ -2,94 +2,101 @@ const Manager = require('../lib/manager');
 const Engineer = require('../lib/engineer');
 const Intern = require('../lib/intern');
 
-let manCard = `
+function genMangCard(manager) {
+  return `
   <div class="col-4 mt-4">
     <div class="card h-100">
       <div class="card-header">
-        <h3 class="emp-name">${manager.getName()}</h3>
-        <h4 class="emp-role">${manager.getRole()}
+        <h3 class="emp-name">${manager.name}</h3>
+        <h4 class="emp-role">${manager.role}
           <i class="fa fa-briefcase" aria-hidden="true"></i>
         </h4>
       </div>
       <div class="card-body">
-        <p class="id">ID: ${manager.getId()}</p>
+        <p class="id">ID: ${manager.id}</p>
         <p class="email">Email: 
-          <a href="mailto:${manager.getEmail()}">${manager.getEmail()}</a>
+          <a href="mailto:${manager.email}">${manager.email}</a>
         </p>
-        <p class="specInfo">Office Number: ${manager.getofficeN()}</p>
+        <p class="specInfo">Office Number: ${manager.specInfo}</p>
       </div>
     </div>
   </div>
   `;
+}
 
-let engCard = `
+function genEngCard(engineer) {
+  return `
   <div class="col-4 mt-4">
     <div class="card h-100">
       <div class="card-header">
-        <h3 class="emp-name">${engineer.getName()}</h3>
-        <h4 class="emp-role">${engineer.getRole()}
+        <h3 class="emp-name">${engineer.name}</h3>
+        <h4 class="emp-role">${engineer.role}
           <i class="fa fa-laptop" aria-hidden="true"></i>
         </h4>
       </div>
       <div class="card-body">
-        <p class="id">ID: ${engineer.getId()}</p>
+        <p class="id">ID: ${engineer.id}</p>
         <p class="email">Email: 
-          <a href="mailto:${engineer.getEmail()}">${engineer.getEmail()}</a>
+          <a href="mailto:${engineer.email}">${engineer.remail}</a>
         </p>
         <p class="specInfo">Github: 
-          <a href="https://github.com/${engineer.getGithub()}">${engineer.getGithub()}</a>
+          <a href="https://github.com/${engineer.specInfo}">${engineer.specInfo}</a>
         </p>
       </div>
     </div>
   </div>
   `;
+}
 
-let intCard = `
+function genIntCard(intern) {
+  return `
   <div class="col-4 mt-4">
     <div class="card h-100">
       <div class="card-header">
-        <h3 class="emp-name">${intern.getName()}</h3>
-        <h4 class="emp-role">${intern.getID()}
+        <h3 class="emp-name">${intern.name}</h3>
+        <h4 class="emp-role">${intern.role}
         <i class="fa fa-graduation-cap" aria-hidden="true"></i>
         </h4>
       </div>
       <div class="card-body">
         <p class="id">ID: ${intern.id}</p>
           <p class="email">Email: 
-            <a href="mailto:${intern.getEmail()}">${intern.getEmail()}</a>
+            <a href="mailto:${intern.email}">${intern.email}</a>
           </p>
-          <p class="specInfo">School: ${intern.getSchool()}</p>
+          <p class="specInfo">School: ${intern.specInfo}</p>
       </div>
     </div>
   </div>
   `;
+}
 
-function generateCards(employeeTeam) {
+function generateHTML(data) {
 
   let cards = [];
-
-  for (let i = 0; i < employeeTeam.length; i++) {
-    const employee = employeeTeam[i];
+  
+  for (let i = 0; i < data.length; i++) {
+    const employee = data[i];
     switch(employee.getRole()) {
       case 'Manager':
-        const manager = new Manager(employee.id, employee.name, employee.email, employee.specInfo);
-        cards.push(manCard);
+        const manager = genMangCard(employee);
+        cards.push(manager);
         break;
       case 'Engineer':
-        const engineer = new Engineer(employee.id, employee.name, employee.email, employee.specInfo);
-        cards.push(engCard);
+        const engineer = genEngCard(employee);
+        cards.push(engineer);
         break;
       case 'Intern':
-        const intern = new Intern((employee.id, employee.name, employee.email, employee.specInfo);
-        cards.push(intCard);
+        const intern = genIntCard(employee);
+        cards.push(intern);
         break;
     }
   }
-  let cardsHTML = cards.join(''); 
-  return cardsHTML;
+  let cardsHTML = cards.join('');
+  let renderHTML = renderBoilerplate(cardsHTML);
+  return renderHTML;
 }
 
-function renderBoilerplate() {
+function renderBoilerplate(cardsHTML) {
   return `
     <!DOCTYPE html>
     <html lang="en">
@@ -115,9 +122,9 @@ function renderBoilerplate() {
         <main>
           <section id="infoContainer" class="row-col-2">
             <div class="header text-center bg-info" id="teamMemberContainer">
-              <h2>Team Members:</h2>
+              <h2>Employees</h2>
                 <div class="row ms-1" id="card-container">
-                  ${generateCards(employeeTeam)}
+                  ${cardsHTML}
                 </div>
             </div>
           </section>

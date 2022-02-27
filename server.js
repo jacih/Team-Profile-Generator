@@ -112,20 +112,26 @@ function generateTeam() {
         console.log('You must have at least 3 members on your team!')
         addEmployee();
       } else {
-        let createHTML = generateHTML(employeeTeam);
-        renderHTML('./dist/team.html', createHTML);   
+        generateProfile();
       }
     }
   });
 }
 
-function renderHTML(fileName, data) {
+function writeToFile(fileName, data) {
   fs.writeFile(fileName, data, (err) => {
     if (err) {
-      console.log(err);
-    } 
-    console.log('Your team profile html has been successfully created!');
+      console.error(err);
+    } else {
+      console.log("Success! You team's index.html has been rendered successfully and can be found in the dist folder.");
+    }
   });
+}
+
+function generateProfile() {
+  const data = generateHTML(employeeTeam);
+  console.log(data);
+  writeToFile('./dist/index.html', data);
 }
 
 generateTeam();
