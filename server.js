@@ -1,5 +1,4 @@
 const inquirer = require('inquirer');
-const path = require('path');
 const fs = require('fs');
 const emailValid = require('email-validator');
 
@@ -11,9 +10,19 @@ const generateHTML = require('./src/generateHTML');
 
 let employeeTeam = [];
 
-function addEmployee() {
+const addEmployee = () => {
   inquirer.prompt([
     {
+      type: 'list',
+      message: 'Please select the team member\'s role',
+      choices: [
+          'Manager',
+          'Engineer',
+          'Intern',
+      ],
+      name: 'role',
+    },
+    {  
       type: 'input',
       message: 'Please input your team member\'s name',
       name: 'name',
@@ -53,85 +62,99 @@ function addEmployee() {
       }
     },
     {
-        type: 'list',
-        message: 'Please select the team member\'s role',
-        choices: [
-            'Engineer',
-            'Intern',
-            'Manager'
-        ],
-        name: 'role',
+      type: 'input',
+      message: `Please enter the team member\'s office number`,
+      name: 'officeN',
+      when: ({ role }) => {
+        if (role === 'Manager') {
+        return true;
+        }
       }
-  ])
-  .then(function({ role }) {
-    let specInfo = '';
-    if (role === 'Engineer') {
-      specInfo = 'Github username';
-    } else if (role === 'Intern') {
-        specInfo = 'school name';
-    } else {
-        specInfo = 'office number'
+    },
+    {
+      type: 'input',
+      message: `Please enter the team member\'s github username`,
+      name: 'github',
+      when: ({ role }) => {
+        if (role === 'Engineer') {
+          return true;
+        }
+      }
+    },
+    {
+      type: 'input',
+      message: `Please enter the team member\'s school`,
+      name: 'school',
+      when: ({ role }) => {
+        if (role === 'Intern') {
+          return true;
+        }
+      }
     }
+  ]).then((employeeData) => {
+
+    switch (employeeData.role) {
+      case 'Manager':
+        let manager = new Manager(employeeData.name, employeeData.id, employeeData.email, employeeData.officeN);
+        employeeTeam.push(manager);
+        break;
+      case 'Engineer':
+        let engineer = new Engineer(employeeData.name, employeeData.id, employeeData.email, employeeData.github);
+        employeeTeam.push(engineer);
+        break;
+      case 'Intern':
+        let intern = new Intern(employeeData.name, employeeData.id, employeeData.email, employeeData.school);
+        employeeTeam.push(intern);
+        break;
+    }
+    generateTeam();
+  });
+}
+
+const generateTeam = () => {
+
+  if (employeeTeam.length === 0) {
+    addEmployee();
+  } else {
     inquirer.prompt([
       {
-        type: 'input',
-        message: `Please enter the team member\'s ${specInfo}`,
-        name: 'specInfo',
+        type:'confirm',
+        message:'Would you like to add a team member?',
+        default:'Yes',
+        name: 'addMember',
       }
-    ]).then(employeeData => {
-
-      let { name, id, email, specInfo } = employeeData;
-      let employee;
-
-      if (role === 'Engineer') {
-        employee = new Engineer(name, id, email, specInfo);
-      } else if (role === 'Intern') {
-        employee = new Intern(name, id, email, specInfo);
-      } else {
-        employee = new Manager(name, id, email, specInfo);
-      }
-      employeeTeam.push(employee);
-      generateTeam();
-    });
-  });
-}
-
-function generateTeam() {
-  inquirer.prompt([
-    {
-      type:'confirm',
-      message:'Would you like to add a team member?',
-      default:'Yes',
-      name: 'addMember',
-    }
-  ]).then((confirm) => {
-    if (confirm.addMember) {
-      addEmployee();
-    } else if (!confirm.addMember) {
-      if (employeeTeam.length < 3) {
-        console.log('You must have at least 3 members on your team!')
+    ]).then((confirm) => {
+      if (confirm.addMember) {
         addEmployee();
-      } else {
-        generateProfile();
+      } else if (!confirm.addMember) {
+        if (employeeTeam.length < 3) {
+          console.log('You must have at least 3 members on your team!')
+          addEmployee();
+        } else {
+          generateProfile();
+        }
       }
-    }
-  });
+    });
+  }
 }
 
-function writeToFile(fileName, data) {
+const renderHTML = (fileName, data) => {
   fs.writeFile(fileName, data, (err) => {
     if (err) {
       console.error(err);
     } else {
-      console.log("Success! You team's index.html has been rendered successfully and can be found in the dist folder.");
+      console.log('Success! You team\'s index.html has been rendered successfully and can be found in the dist folder.');
     }
   });
 }
-
-function generateProfile() {
+const generateProfile = () => {
   const data = generateHTML(employeeTeam);
   console.log(data);
-  writeToFile('./dist/index.html', data);
+  renderHTML('./dist/index.html', data);
 }
 
-generateTeam();
+const init = () => {
+  generateTeam();
+}
+
+init();
