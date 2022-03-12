@@ -1,5 +1,24 @@
 body {
-    margin: 0;
-    padding: 0;
-    height: 100vh;
+    font-size: 18px;
+    font-weight: bold;
+}
+
+.navbar {
+    background-color: #001e3f;
+    font-weight: bold;
+    color:#dfe0e0;
+    padding-bottom: 15px;
+}
+
+#info-container {
+    margin-top: 20px;
+}
+
+.card {
+    border-style: none;
+    height: 300px;
+}
+
+h2, h3 {
+    font-weight: bolder;
 }

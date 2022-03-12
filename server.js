@@ -92,7 +92,6 @@ const addEmployee = () => {
       }
     }
   ]).then((employeeData) => {
-
     switch (employeeData.role) {
       case 'Manager':
         let manager = new Manager(employeeData.name, employeeData.id, employeeData.email, employeeData.officeN);
@@ -112,26 +111,36 @@ const addEmployee = () => {
 }
 
 const generateTeam = () => {
+  
+  let hasManager = false;
+  let check = employeeTeam.some(employee => {
+    if (employee.role === 'Manager') {
+      hasManager = true;
+    }
+  });
 
   if (employeeTeam.length === 0) {
     addEmployee();
   } else {
     inquirer.prompt([
-      {
-        type:'confirm',
-        message:'Would you like to add a team member?',
-        default:'Yes',
-        name: 'addMember',
-      }
-    ]).then((confirm) => {
-      if (confirm.addMember) {
+    {
+      type:'confirm',
+      message:'Would you like to add a team member?',
+      default:'Yes',
+      name: 'addMember',
+    }
+  ]).then((confirm) => {
+    if (confirm.addMember) {
+      addEmployee();
+    } else if (!confirm.addMember) {
+      if (employeeTeam.length < 3) {
+        console.log('You must have at least 3 members on your team!')
         addEmployee();
-      } else if (!confirm.addMember) {
-        if (employeeTeam.length < 3) {
-          console.log('You must have at least 3 members on your team!')
-          addEmployee();
-        } else {
-          generateProfile();
+      } else if (!hasManager) {
+        console.log('Your team must have a manager!');
+        addEmployee();
+      } else {
+        generateProfile();
         }
       }
     });
