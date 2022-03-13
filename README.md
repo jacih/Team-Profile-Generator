@@ -22,7 +22,7 @@ Video Walkthrough:
 /Users/jacquelinehodgson/Desktop/UTorCoding/Homework/Team-Profile-Generator/dist/images/TPG_rwalkthrough_vid.mp4
 
 Laptop Screenshot:
-/Users/jacquelinehodgson/Desktop/UTorCoding/Homework/Team-Profile-Generator/dist/images/Screenshot_Laptop.png
+dist/images/Screenshot_Laptop.png
 
 Tablet Screenshot:
 /Users/jacquelinehodgson/Desktop/UTorCoding/Homework/Team-Profile-Generator/dist/images/Screenshot_Tablet.png
