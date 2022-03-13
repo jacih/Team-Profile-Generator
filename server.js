@@ -111,9 +111,10 @@ const addEmployee = () => {
 }
 
 const generateTeam = () => {
+
   if (employeeTeam.length === 0) {
     addEmployee();
-  } else {
+  } else if (employeeTeam.length > 0) {
     inquirer.prompt([
   {
     type:'confirm',
@@ -122,34 +123,17 @@ const generateTeam = () => {
     name: 'addMember',
   }
   ]).then((confirm) => {
-    if (!confirm.addMember) {
+    if (confirm.addMember) {
+      addEmployee();
+    } else if (!confirm.addMember) {
       if (employeeTeam.length < 3) {
         console.log('You must have at least 3 members on your team.');
         addEmployee();
-      } else if (isManaged(employeeTeam) === false) {
-        // console.log(isManaged(employeeTeam));
-        console.log('Your team must include a manager');
-        addEmployee();
       } else {
-        // console.log(`This is the employeeTeam array: ${employeeTeam}`); 
         generateProfile();
       }
-    } else {
-      addEmployee();
     }
   });
-  }
-}
-
-const isManaged = (arrayOfObjs) => {
-  let hasManager = false;
-  for (let i = 0; i < arrayOfObjs.length; i++) {
-    for (role in arrayOfObjs[i]) {
-      if (arrayOfObjs[i].role === 'Manager') {
-        hasManager = true;
-        return hasManager;
-      }
-    }
   }
 }
    
@@ -162,6 +146,7 @@ const renderHTML = (fileName, data) => {
     }
   });
 }
+
 const generateProfile = () => {
   const data = generateHTML(employeeTeam);
   console.log(data);

@@ -34,7 +34,7 @@ function generateHTML(data) {
         <link rel='stylesheet' href='./style.css'>
         <title>Team Profile Generator</title>
       </head>
-      <body
+      <body>
         <header>
           <nav class='navbar-light' id='navbar'>
             <span class='navbar display-3 justify-content-center'>My Team Profile</span>
