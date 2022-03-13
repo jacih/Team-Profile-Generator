@@ -19,7 +19,7 @@ The Team Profile Generator application is a handy tool for any software engineer
 ## [Mock-Up](#table-of-contents)
 
 Video Walkthrough:
-![Video Walkthrough](dist/images/TPG_rwalkthrough_vid.mp4)
+![Video Walkthrough]
 
 Responsive Design Mockups:
 ![Laptop Mockup](dist/images/Screenshot_Laptop.png)
@@ -42,8 +42,8 @@ Currently not accepting contributions.
 In your CLI input 'npm install' to ensure you have jest and inquirer installed for the repo, then 'npm test' to run the testing suite.
 
 ## [Links](#table-of-contents)
-Github Repository: 
-Staging Link:
+[Github Repository](https://github.com/jacih/Team-Profile-Generator)
+[Staging Link]
 
 ## [Questions](#table-of-contents)
 Contact me through [GitHub](https://github.com/jacih)
