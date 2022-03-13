@@ -21,11 +21,9 @@ The Team Profile Generator application is a handy tool for any software engineer
 Video Walkthrough:
 /Users/jacquelinehodgson/Desktop/UTorCoding/Homework/Team-Profile-Generator/dist/images/TPG_rwalkthrough_vid.mp4
 
-Laptop Screenshot:
-dist/images/Screenshot_Laptop.png
+[!Laptop Mockup](dist/images/Screenshot_Laptop.png)
 
-Tablet Screenshot:
-/Users/jacquelinehodgson/Desktop/UTorCoding/Homework/Team-Profile-Generator/dist/images/Screenshot_Tablet.png
+[!Tablet Screenshot](dist/images/Screenshot_Tablet.png)
 
 ## [Installation](#table-of-contents)
 Clone repository, npm install, npm test to run the test suite, and npm start to run inquirer for team profile generation.
