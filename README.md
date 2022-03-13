@@ -19,7 +19,7 @@ The Team Profile Generator application is a handy tool for any software engineer
 ## [Mock-Up](#table-of-contents)
 
 Video Walkthrough: 
-[Google Drive Link for MP4 video](https://drive.google.com/file/d/11p5uijsgq-EsLFcu8UVNBEuwz7qBRoWq/view?usp=sharing)
+[Youtube Link for Video Walkthrough](https://youtu.be/3-Hi0WK9JpM)
 
 Responsive Design Mockups:
 ![Laptop Mockup](dist/images/Screenshot_Laptop.png)
