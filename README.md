@@ -44,7 +44,6 @@ In your CLI input 'npm install' to ensure you have jest and inquirer installed f
 
 ## [Links](#table-of-contents)
 [Github Repository](https://github.com/jacih/Team-Profile-Generator)
-[Staging Link]
 
 ## [Questions](#table-of-contents)
 Contact me through [GitHub](https://github.com/jacih)
