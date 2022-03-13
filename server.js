@@ -111,40 +111,48 @@ const addEmployee = () => {
 }
 
 const generateTeam = () => {
-  
-  let hasManager = false;
-  const checkManager = (array) => {
-    let check = array.some(data => {
-      if (data.role === 'Manager') {
-        hasManager = true;
-      }
-    });
-  }
-
   if (employeeTeam.length === 0) {
     addEmployee();
   } else {
     inquirer.prompt([
-    {
-      type:'confirm',
-      message:'Would you like to add a team member?',
-      default:'Yes',
-      name: 'addMember',
-    }
-    ]).then((confirm) => {
-      if (confirm.addMember) {
+  {
+    type:'confirm',
+    message:'Would you like to add a team member?',
+    default:'Yes',
+    name: 'addMember',
+  }
+  ]).then((confirm) => {
+    if (!confirm.addMember) {
+      if (employeeTeam.length < 3) {
+        console.log('You must have at least 3 members on your team.');
         addEmployee();
-      } else if (employeeTeam.length < 3 || !checkManager(employeeTeam)) {
-          console.log(hasManager);
-          console.log('You must have at least 3 members and 1 manager on your team!')
-          addEmployee();
-      } else { 
+      } else if (isManaged(employeeTeam) === false) {
+        // console.log(isManaged(employeeTeam));
+        console.log('Your team must include a manager');
+        addEmployee();
+      } else {
+        // console.log(`This is the employeeTeam array: ${employeeTeam}`); 
         generateProfile();
       }
-    });
+    } else {
+      addEmployee();
+    }
+  });
   }
 }
 
+const isManaged = (arrayOfObjs) => {
+  let hasManager = false;
+  for (let i = 0; i < arrayOfObjs.length; i++) {
+    for (role in arrayOfObjs[i]) {
+      if (arrayOfObjs[i].role === 'Manager') {
+        hasManager = true;
+        return hasManager;
+      }
+    }
+  }
+}
+   
 const renderHTML = (fileName, data) => {
   fs.writeFile(fileName, data, (err) => {
     if (err) {
