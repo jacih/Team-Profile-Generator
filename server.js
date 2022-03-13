@@ -113,11 +113,13 @@ const addEmployee = () => {
 const generateTeam = () => {
   
   let hasManager = false;
-  let check = employeeTeam.some(employee => {
-    if (employee.role === 'Manager') {
-      hasManager = true;
-    }
-  });
+  const checkManager = (array) => {
+    let check = array.some(data => {
+      if (data.role === 'Manager') {
+        hasManager = true;
+      }
+    });
+  }
 
   if (employeeTeam.length === 0) {
     addEmployee();
@@ -129,19 +131,15 @@ const generateTeam = () => {
       default:'Yes',
       name: 'addMember',
     }
-  ]).then((confirm) => {
-    if (confirm.addMember) {
-      addEmployee();
-    } else if (!confirm.addMember) {
-      if (employeeTeam.length < 3) {
-        console.log('You must have at least 3 members on your team!')
+    ]).then((confirm) => {
+      if (confirm.addMember) {
         addEmployee();
-      } else if (!hasManager) {
-        console.log('Your team must have a manager!');
-        addEmployee();
-      } else {
+      } else if (employeeTeam.length < 3 || !checkManager(employeeTeam)) {
+          console.log(hasManager);
+          console.log('You must have at least 3 members and 1 manager on your team!')
+          addEmployee();
+      } else { 
         generateProfile();
-        }
       }
     });
   }
